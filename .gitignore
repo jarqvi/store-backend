@@ -141,4 +141,7 @@ dist
 # SvelteKit build / generate output
 .svelte-kit
 
+# For ignore log file
+app/log.txt
+
 # End of https://www.toptal.com/developers/gitignore/api/node
