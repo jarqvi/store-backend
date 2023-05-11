@@ -3,6 +3,10 @@ const {default: mongoose} = require('mongoose');
 const path = require('path');
 const { AllRoutes } = require('./router/router');
 const morgan = require('morgan');
+const createError = require('http-errors');
+const fs = require('fs');
+const swaggerUI = require('swagger-ui-express');
+const swaggerJSDoc = require('swagger-jsdoc');
 
 module.exports = class Application {
     #app = express();
@@ -14,10 +18,27 @@ module.exports = class Application {
         this.errorHandling();
     }
     configApplication() {
+        const logStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
+        this.#app.use(morgan('combined', { stream: logStream }));
         this.#app.use(morgan('dev'));
         this.#app.use(express.json());
         this.#app.use(express.urlencoded({extended: true}));
-        this.#app.use(express.static(path.join(__dirname, '..', 'public')));
+        this.#app.use(express.static(path.join(__dirname, '..', 'public')));    
+        this.#app.use('/api-doc',swaggerUI.serve, swaggerUI.setup(swaggerJSDoc({
+            swaggerDefinition: {
+                info: {
+                    title: 'NodeJS API',
+                    version: '1.0.0',
+                    description: 'NodeJS API with Express'
+                },
+                servers: [
+                    {
+                        url: 'http://localhost:3000'
+                    }
+                ]
+            },
+            apis: ['./app/router/**/*.js']
+        })));
     }
     createServer(PORT) {
         const http = require('http');
@@ -26,7 +47,6 @@ module.exports = class Application {
         });
     }
     connectToMongoDB(DB_URL) {
-        const mongoose = require('mongoose');
         main().catch(err => console.log(err));
         async function main() {
             await mongoose.connect(DB_URL)
@@ -49,17 +69,16 @@ module.exports = class Application {
     }
     errorHandling() {
         this.#app.use((req, res, next) => {
-            return res.status(404).json({
-                statusCode: 404,
-                message: 'Page not found.'
-            });
+            next(createError.NotFound('Page not found.'));
         }); 
         this.#app.use((err, req, res, next) => {
-            const statusCode = err.statusCode || 500;
-            const message = err.message || 'Internal server error.';
+            const statusCode = err.statusCode || createError.InternalServerError().statusCode;
+            const message = err.message || createError.InternalServerError().message;
             return res.status(statusCode).json({
-                statusCode,
-                message
+                errors: {
+                    statusCode,
+                    message
+                }
             });
         });
     }
