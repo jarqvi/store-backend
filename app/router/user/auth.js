@@ -9,7 +9,7 @@ const router = require('express').Router();
  */
 /**
  * @swagger
- * /user/login:
+ * /user/get-otp:
  *      post:
  *          summary: User Login
  *          tags: [User-Auth]
@@ -31,7 +31,37 @@ const router = require('express').Router();
  *                  description: Internal server error
  */
 
-router.post('/login', UserAuthController.login)
+router.post('/get-otp', UserAuthController.getOtp);
+/**
+ * @swagger
+ *  /user/check-otp:
+ *      post:
+ *          summary: User Login
+ *          tags: [User-Auth]
+ *          description: Login user in user panel with phone number and one time password(OTP)
+ *          parameters:
+ *          -   name: mobile
+ *              description: fa-IRI mobile number
+ *              in: formData
+ *              required: true
+ *              type: string
+ *          -   name: code
+ *              description: enter sms code received on your mobile
+ *              in: formData
+ *              required: true
+ *              type: string
+ *          responses:
+ *              201:
+ *                  description: User login successfully
+ *              400:
+ *                  description: Bad request
+ *              401:
+ *                  description: Unauthorized
+ *              500:
+ *                  description: Internal server error
+ *          
+ */
+router.post('/check-otp', UserAuthController.checkOtp);
 
 module.exports = {
     UserAuthRoutes: router
