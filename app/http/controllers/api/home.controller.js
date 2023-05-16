@@ -1,4 +1,4 @@
-const { authSchema } = require("../../validators/user/auth.schema");
+const { getOtpSchema } = require("../../validators/user/auth.schema");
 const Controller = require("../controller"); 
 
 module.exports = new class HomeController extends Controller  {
