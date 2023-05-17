@@ -7,6 +7,7 @@ const router = require('express').Router();
  *  name: User-Auth
  *  description: Login user section
  */
+
 /**
  * @swagger
  * /user/get-otp:
@@ -62,6 +63,23 @@ router.post('/get-otp', UserAuthController.getOtp);
  *          
  */
 router.post('/check-otp', UserAuthController.checkOtp);
+/**
+ * @swagger
+ *  /user/refresh-token:
+ *      post:
+ *          summary: Refresh token
+ *          tags: [User-Auth]
+ *          description: Send refresh token to get new access token
+ *          parameters:
+ *          -   in: body
+ *              required: true
+ *              type: string
+ *              name: refreshToken
+ *          responses:
+ *              200:
+ *                  description: Successfully    
+ */
+router.post('/refresh-token', UserAuthController.refreshToken);
 
 module.exports = {
     UserAuthRoutes: router
