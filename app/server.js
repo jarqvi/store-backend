@@ -7,6 +7,7 @@ const createError = require('http-errors');
 const fs = require('fs');
 const swaggerUI = require('swagger-ui-express');
 const swaggerJSDoc = require('swagger-jsdoc');
+const cors = require('cors');
 
 module.exports = class Application {
     #app = express();
@@ -18,6 +19,7 @@ module.exports = class Application {
         this.errorHandling();
     }
     configApplication() {
+        this.#app.use(cors());
         const logStream = fs.createWriteStream(path.join(__dirname, 'log.txt'), { flags: 'a' });
         this.#app.use(morgan('combined', { stream: logStream }));
         this.#app.use(morgan('dev'));
