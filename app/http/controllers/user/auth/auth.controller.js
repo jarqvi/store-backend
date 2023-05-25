@@ -1,5 +1,5 @@
 const { UserModel } = require("../../../../models/users");
-const { EXPIRES_IN, USER_ROLE } = require("../../../../utils/constans");
+const { USER_ROLE } = require("../../../../utils/constans");
 const { randomNumberGenerator, SignAccessToken, verifyRefreshToken, SignRefreshToken } = require("../../../../utils/functions");
 const { getOtpSchema, checkOtpSchema } = require("../../../validators/user/auth.schema")
 const createError = require('http-errors');
@@ -50,7 +50,7 @@ class UserAuthController extends Controller {
     async saveUser(mobile, code) {
         let otp = {
             code,
-            expiresIn: EXPIRES_IN
+            expiresIn: new Date().getTime() + 120000
         }
         const result = await this.checkExitsUser(mobile);
         if (result) {
