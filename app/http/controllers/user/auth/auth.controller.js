@@ -1,5 +1,5 @@
 const { UserModel } = require("../../../../models/users");
-const { USER_ROLE } = require("../../../../utils/constans");
+const { ROLES } = require("../../../../utils/constans");
 const { randomNumberGenerator, SignAccessToken, verifyRefreshToken, SignRefreshToken } = require("../../../../utils/functions");
 const { getOtpSchema, checkOtpSchema } = require("../../../validators/user/auth.schema")
 const createError = require('http-errors');
@@ -59,7 +59,7 @@ class UserAuthController extends Controller {
         return !!(await UserModel.create({
             mobile,
             otp,
-            Roles: [USER_ROLE]
+            Roles: [ROLES.USER]
         }));    
     }
     async checkExitsUser(mobile) {
