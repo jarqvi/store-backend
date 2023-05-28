@@ -1,7 +1,8 @@
 const { CategoryModel } = require("../../../models/categories");
-const { addCategorySchema } = require("../../validators/admin/category.schema");
+const { addCategorySchema, updateCategorySchema } = require("../../validators/admin/category.schema");
 const Controller = require("../controller");
 const createError = require("http-errors");
+const mongoose = require('mongoose');
 
 class CategoryController extends Controller {
     async checkExistCategory(id) {
@@ -25,9 +26,20 @@ class CategoryController extends Controller {
             next(error);
         }
     }
-    editCategory(req, res, next) {
+    async editCategory(req, res, next) {
         try {
-            
+            const {id} = req.params;
+            const {title} = req.body;
+            const category = await this.checkExistCategory(id);
+            await updateCategorySchema.validateAsync(req.body);
+            const result = await CategoryModel.updateOne({_id: id}, {$set: {title}});
+            if (result.modifiedCount == 0) throw createError.InternalServerError('Server error.');
+            return res.status(202).json({
+                data: {
+                    statusCode: 202,
+                    message: 'Success',
+                }
+            });
         } catch (error) {
             next(error);
         }
@@ -36,7 +48,12 @@ class CategoryController extends Controller {
         try {
             const {id} = req.params;
             const category = await this.checkExistCategory(id);
-            const deleteResult = await CategoryModel.deleteOne({_id: category._id});
+            const deleteResult = await CategoryModel.deleteMany({
+                $or: [
+                    {_id: category._id},
+                    {parent: category._id}
+                ]
+            });
             if (deleteResult.deletedCount == 0) throw createError.InternalServerError('Server error.');
             return res.status(202).json({
                 data: {
@@ -50,7 +67,28 @@ class CategoryController extends Controller {
     }
     async getAllCategory(req, res, next) {
         try {
+            const categories = await CategoryModel.find({parent: undefined}, {__v: 0, id: 0});
+            return res.status(200).json({
+                data: {
+                    statusCode: 200,
+                    message: 'Success',
+                    categories
+                }
+                
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+    async getCategoryById(req, res, next) {
+        try {
+            const {id} = req.params;
             const categories = await CategoryModel.aggregate([
+                {
+                    $match: {
+                        _id: new mongoose.Types.ObjectId(id)
+                    }
+                },
                 {
                     $lookup: {
                         from: 'categories',
@@ -58,7 +96,8 @@ class CategoryController extends Controller {
                         foreignField: 'parent',
                         as: 'children'
                     }
-                }, {
+                }, 
+                {
                     $project: {
                         __v: 0,
                         'children.__v': 0,
@@ -74,13 +113,6 @@ class CategoryController extends Controller {
                 }
                 
             });
-        } catch (error) {
-            next(error);
-        }
-    }
-    getCategoryById(req, res, next) {
-        try {
-            
         } catch (error) {
             next(error);
         }
@@ -108,6 +140,20 @@ class CategoryController extends Controller {
                     statusCode: 200,
                     message: 'Success',
                     children
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+    async getAllCategoryWithoutPopulate(req, res, next) {
+        try {
+            const categories = await CategoryModel.aggregate([{$match: {}}]);
+            return res.status(200).json({
+                data: {
+                    statusCode: 200,
+                    message: 'Success',
+                    categories
                 }
             });
         } catch (error) {
