@@ -3,6 +3,8 @@ const createError = require('http-errors');
 const { UserModel } = require('../models/users');
 const { ACCESS_TOKEN_SECRET_KEY, REFRESH_TOKEN_SECRET_KEY } = require('./constans');
 const redisClient = require('./init-redis');
+const fs = require('fs');
+const path = require('path');
 
 function randomNumberGenerator() {
     return Math.floor(Math.random() * (99999 - 10000)) + 10000;
@@ -56,9 +58,17 @@ function verifyRefreshToken(token) {
     });
 }
 
+function deleteFileInPublic(fileAddress) {
+    if (fileAddress) {
+        const pathFile = path.join(__dirname, '../../public', fileAddress);
+        if (fs.existsSync(pathFile)) fs.unlinkSync(pathFile);
+    } 
+}
+
 module.exports = {
     randomNumberGenerator,
     SignAccessToken,
     SignRefreshToken,
-    verifyRefreshToken
+    verifyRefreshToken,
+    deleteFileInPublic
 }
