@@ -4,6 +4,32 @@ const { uploadFile } = require('../../utils/multer');
 
 const router = require('express').Router();
 
+// /**
+//  * @swagger
+//  *  components:
+//  *      schemas:
+//  *          AddBlog:
+//  *              type: object
+//  *              required:
+//  *                  -   mobile
+//  *              properties:
+//  *                  mobile:
+//  *                      type: string
+//  *                      description: fa-IRI mobile number for login and register
+//  *          UpdateBlog:
+//  *              type: object
+//  *              required:
+//  *                  -   mobile  
+//  *                  -   code
+//  *              properties:
+//  *                  mobile:
+//  *                      type: string
+//  *                      description: fa-IRI mobile number for login and register
+//  *                  code:
+//  *                      type: integer
+//  *                      description: enter sms code received on your mobile         
+//  */
+
 /**
  * @swagger
  *  /admin/blogs:

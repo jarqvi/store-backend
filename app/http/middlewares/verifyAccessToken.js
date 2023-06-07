@@ -6,7 +6,7 @@ const { ACCESS_TOKEN_SECRET_KEY } = require('../../utils/constans');
 function getToken(headers) {
     const [bearer, token] = headers?.['access-token']?.split(' ') || [];
     if (token && ['Bearer', 'bearer'].includes(bearer)) return token;
-    throw crateError.Unauthorized('Your account was not found, log in to your account');
+    throw createError.Unauthorized('Your account was not found, log in to your account');
 }
 function verifyAccessToken(req, res, next) {
     try {
