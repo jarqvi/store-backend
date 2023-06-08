@@ -4,31 +4,60 @@ const { uploadFile } = require('../../utils/multer');
 
 const router = require('express').Router();
 
-// /**
-//  * @swagger
-//  *  components:
-//  *      schemas:
-//  *          AddBlog:
-//  *              type: object
-//  *              required:
-//  *                  -   mobile
-//  *              properties:
-//  *                  mobile:
-//  *                      type: string
-//  *                      description: fa-IRI mobile number for login and register
-//  *          UpdateBlog:
-//  *              type: object
-//  *              required:
-//  *                  -   mobile  
-//  *                  -   code
-//  *              properties:
-//  *                  mobile:
-//  *                      type: string
-//  *                      description: fa-IRI mobile number for login and register
-//  *                  code:
-//  *                      type: integer
-//  *                      description: enter sms code received on your mobile         
-//  */
+/**
+ * @swagger
+ *  components:
+ *      schemas:
+ *          AddBlog:
+ *              type: object
+ *              required:
+ *                  -   title
+ *                  -   text
+ *                  -   shortText
+ *                  -   tags
+ *                  -   category
+ *                  -   image
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: the title of blog
+ *                  text:
+ *                      type: string
+ *                      description: the text of blog
+ *                  shortText:
+ *                      type: string
+ *                      description: the shortText of blog
+ *                  tags:
+ *                      type: string
+ *                      description: the tags of blog 
+ *                  category:
+ *                      type: string
+ *                      description: the category id of blog
+ *                  image:
+ *                      type: file
+ *                      description: the image of blog
+ *          UpdateBlog:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      description: the title of blog
+ *                  text:
+ *                      type: string
+ *                      description: the text of blog
+ *                  shortText:
+ *                      type: string
+ *                      description: the shortText of blog
+ *                  tags:
+ *                      type: string
+ *                      description: the tags of blog 
+ *                  category:
+ *                      type: string
+ *                      description: the category id of blog
+ *                  image:
+ *                      type: file
+ *                      description: the image of blog         
+ */
 
 /**
  * @swagger
@@ -36,12 +65,6 @@ const router = require('express').Router();
  *      get:
  *          tags: [Blog(AdminPanel)]
  *          summery: get all blogs
- *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *          responses:
  *              200:
  *                  description: success - get all blogs
@@ -53,38 +76,12 @@ router.get('/', AdminBlogController.getListOfBlog);
  *    post:
  *      tags: [Blog(AdminPanel)]
  *      summery: create new blog
- *      consumes:
- *          - multipart/form-data
- *      parameters:
- *          -   in: header
- *              example: Bearer access-token
- *              name: access-token
- *              type: string
+ *      requestBody:
  *              required: true
- *          -   in: formData
- *              name: title
- *              required: true
- *              type: string
- *          -   in: formData
- *              name: text
- *              required: true
- *              type: string
- *          -   in: formData
- *              name: shortText
- *              required: true
- *              type: string
- *          -   in: formData
- *              name: tags
- *              example: tag-1#tag-2#tag-3 || str || undefined
- *              type: string
- *          -   in: formData
- *              name: category
- *              required: true
- *              type: string
- *          -   in: formData
- *              name: image
- *              required: true
- *              type: file
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddBlog'
  *      responses:
  *          201:
  *              description: success - create new blog
@@ -97,11 +94,6 @@ router.post('/add', uploadFile.single('image'), stringToArray('tags'), AdminBlog
  *          tags: [Blog(AdminPanel)]
  *          summery: get one blog by id
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -118,11 +110,6 @@ router.get('/:id', AdminBlogController.getOneBlogById);
  *          tags: [Blog(AdminPanel)]
  *          summery: delete blog by id
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -141,34 +128,16 @@ router.delete('/remove/:id', AdminBlogController.deleteBlogById);
  *      consumes:
  *          - multipart/form-data
  *      parameters:
- *          -   in: header
- *              example: Bearer access-token
- *              name: access-token
- *              type: string
- *              required: true
  *          -   in: path
  *              name: id
  *              type: string
  *              required: true
- *          -   in: formData
- *              name: title
- *              type: string
- *          -   in: formData
- *              name: text
- *              type: string
- *          -   in: formData
- *              name: shortText
- *              type: string
- *          -   in: formData
- *              name: tags
- *              example: tag-1#tag-2#tag-3 || str || undefined
- *              type: string
- *          -   in: formData
- *              name: category
- *              type: string
- *          -   in: formData
- *              name: image
- *              type: file
+ *      requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdateBlog'
  *      responses:
  *          201:
  *              description: success - update blog by id

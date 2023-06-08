@@ -32,12 +32,6 @@ const router = require('express').Router();
  *      post:
  *          tags: [Category(AdminPanel)]
  *          summery: Create new category title
- *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *          requestBody:
  *              required: true
  *              content:
@@ -58,12 +52,6 @@ router.post('/add', CategoryController.addCategory);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summery: Get all parent categories
- *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *          responses:
  *              200:
  *                  description: Success
@@ -75,12 +63,6 @@ router.get('/parents', CategoryController.getAllParents);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summery: Get all child categories
- *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: parent
  *                  type: string
@@ -96,12 +78,6 @@ router.get('/children/:parent', CategoryController.getChildOfParents);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summery: Get all categories
- *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *          responses:
  *              200:
  *                  description: Success
@@ -114,11 +90,6 @@ router.get('/all', CategoryController.getAllCategory);
  *          tags: [Category(AdminPanel)]
  *          summery: Delete category by id
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -135,11 +106,6 @@ router.delete('/delete/:id', CategoryController.removeCategory);
  *          tags: [Category(AdminPanel)]
  *          summery: Get all categories without populate
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *          responses:
  *              202:
  *                  description: Success
@@ -152,11 +118,6 @@ router.get('/list-of-all', CategoryController.getAllCategoryWithoutPopulate);
  *          tags: [Category(AdminPanel)]
  *          summery: Edit or update category title
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: id
  *                  type: string
@@ -184,11 +145,6 @@ router.patch('/update/:id', CategoryController.editCategory);
  *          tags: [Category(AdminPanel)]
  *          summery: Get category by id
  *          parameters:
- *              -   in: header
- *                  example: Bearer access-token
- *                  name: access-token
- *                  type: string
- *                  required: true
  *              -   in: path
  *                  name: id
  *                  type: string
