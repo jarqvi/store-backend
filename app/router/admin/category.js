@@ -5,7 +5,7 @@ const router = require('express').Router();
  * @swagger
  *  components:
  *      schemas:
- *          CreateCategory:
+ *          Category:
  *              type: object
  *              required:
  *                  -   title
@@ -15,15 +15,7 @@ const router = require('express').Router();
  *                      description: the title of category
  *                  parent:
  *                      type: string
- *                      description: the parent of category
- *          UpdateCategory:
- *              type: object
- *              required:
- *                  -   title
- *              properties:
- *                  title:
- *                      type: string
- *                      description: the title of category         
+ *                      description: the parent of category        
  */
 
 /**
@@ -37,10 +29,10 @@ const router = require('express').Router();
  *              content:
  *                  application/x-www-form-urlencoded:
  *                      schema:
- *                          $ref: '#/components/schemas/CreateCategory'
+ *                          $ref: '#/components/schemas/Category'
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/CreateCategory'
+ *                          $ref: '#/components/schemas/Category'
  *          responses:
  *              201:
  *                  description: Success
@@ -127,10 +119,10 @@ router.get('/list-of-all', CategoryController.getAllCategoryWithoutPopulate);
  *              content:
  *                  application/x-www-form-urlencoded:
  *                      schema:
- *                          $ref: '#/components/schemas/UpdateCategory'
+ *                          $ref: '#/components/schemas/Category'
  *                  application/json:
  *                      schema:
- *                          $ref: '#/components/schemas/UpdateCategory'         
+ *                          $ref: '#/components/schemas/Category'         
  *          responses:
  *              202:
  *                  description: Success
