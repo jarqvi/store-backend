@@ -65,10 +65,43 @@ function deleteFileInPublic(fileAddress) {
     } 
 }
 
+function listOfImages(files, fileUploadPath) {
+    if (files?.length > 0) {
+        return ((files.map(file => path.join(fileUploadPath, file.filename))).map(item => item.replace(/\\/g, '/')));
+    } else {
+        return [];
+    }
+}
+
+function copyObj(obj) {
+    return JSON.parse(JSON.stringify(obj));
+}
+
+function setFeatures(body) {
+    const {width, length, height, weight} = body;
+    let feature = {}, type = 'real';
+    if (width || length || height || weight) {
+        if (!width) feature.width = 0;
+        else feature.width = width;
+        if (!length) feature.length = 0;
+        else feature.length = length;
+        if (!weight) feature.weight = 0;
+        else feature.weight = weight;
+        if (!height) feature.height = 0;
+        else feature.height = height;
+    } else {
+        type = 'virtual';
+    }
+    return {feature, type};
+}
+
 module.exports = {
     randomNumberGenerator,
     SignAccessToken,
     SignRefreshToken,
     verifyRefreshToken,
-    deleteFileInPublic
+    deleteFileInPublic,
+    listOfImages,
+    copyObj,
+    setFeatures
 }

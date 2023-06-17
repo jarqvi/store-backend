@@ -3,6 +3,7 @@ const { addCategorySchema, updateCategorySchema } = require("../../validators/ad
 const Controller = require("../controller");
 const createError = require("http-errors");
 const mongoose = require('mongoose');
+const {StatusCodes: HttpStatus} = require('http-status-codes');
 
 class CategoryController extends Controller {
     async checkExistCategory(id) {
@@ -16,9 +17,9 @@ class CategoryController extends Controller {
             const {title, parent} = req.body;
             const category = await CategoryModel.create({title, parent});
             if (!category) throw createError.InternalServerError('Internal Server Error');
-            return res.status(201).json({
+            return res.status(HttpStatus.CREATED).json({
                 data: {
-                    statusCode: 201,
+                    statusCode: HttpStatus.CREATED,
                     message: 'Category created successfully',
                 }
             });
@@ -34,9 +35,9 @@ class CategoryController extends Controller {
             await updateCategorySchema.validateAsync(req.body);
             const result = await CategoryModel.updateOne({_id: id}, {$set: {title}});
             if (result.modifiedCount == 0) throw createError.InternalServerError('Server error.');
-            return res.status(202).json({
+            return res.status(HttpStatus.ACCEPTED).json({
                 data: {
-                    statusCode: 202,
+                    statusCode: HttpStatus.ACCEPTED,
                     message: 'Success',
                 }
             });
@@ -55,9 +56,9 @@ class CategoryController extends Controller {
                 ]
             });
             if (deleteResult.deletedCount == 0) throw createError.InternalServerError('Server error.');
-            return res.status(202).json({
+            return res.status(HttpStatus.ACCEPTED).json({
                 data: {
-                    statusCode: 202,
+                    statusCode: HttpStatus.ACCEPTED,
                     message: 'Category deleted.'
                 }
             });
@@ -68,9 +69,9 @@ class CategoryController extends Controller {
     async getAllCategory(req, res, next) {
         try {
             const categories = await CategoryModel.find({parent: undefined}, {__v: 0, id: 0});
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data: {
-                    statusCode: 200,
+                    statusCode: HttpStatus.OK,
                     message: 'Success',
                     categories
                 }
@@ -105,9 +106,9 @@ class CategoryController extends Controller {
                     }
                 }
             ]);
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data: {
-                    statusCode: 200,
+                    statusCode: HttpStatus.OK,
                     message: 'Success',
                     categories
                 }
@@ -120,9 +121,9 @@ class CategoryController extends Controller {
     async getAllParents(req, res, next) {
         try {
             const parents = await CategoryModel.find({parent: undefined}, {__v: 0});
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data: {
-                    statusCode: 200,
+                    statusCode: HttpStatus.OK,
                     message: 'Success',
                     parents
                 }
@@ -135,9 +136,9 @@ class CategoryController extends Controller {
         try {
             const { parent } = req.params;
             const children = await CategoryModel.find({parent}, {__v: 0, parent: 0});
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data: {
-                    statusCode: 200,
+                    statusCode: HttpStatus.OK,
                     message: 'Success',
                     children
                 }
@@ -149,9 +150,9 @@ class CategoryController extends Controller {
     async getAllCategoryWithoutPopulate(req, res, next) {
         try {
             const categories = await CategoryModel.aggregate([{$match: {}}]);
-            return res.status(200).json({
+            return res.status(HttpStatus.OK).json({
                 data: {
-                    statusCode: 200,
+                    statusCode: HttpStatus.OK,
                     message: 'Success',
                     categories
                 }
