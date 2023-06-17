@@ -55,6 +55,7 @@ router.get('/parents', CategoryController.getAllParents);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summery: Get all child categories
+ *          parameters:
  *              -   in: path
  *                  name: parent
  *                  type: string
@@ -97,7 +98,6 @@ router.delete('/delete/:id', CategoryController.removeCategory);
  *      get:
  *          tags: [Category(AdminPanel)]
  *          summery: Get all categories without populate
- *          parameters:
  *          responses:
  *              202:
  *                  description: Success
