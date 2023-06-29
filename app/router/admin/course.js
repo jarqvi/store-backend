@@ -94,7 +94,22 @@ router.post('/add', uploadFile.single('image'), stringToArray('tags'), CourseCon
 // router.put();
 // router.delete();
 // router.patch();
-// router.get();
+/**
+ * @swagger
+ *  /admin/courses/{id}:
+ *      get:
+ *          tags: [Course(AdminPanel)]
+ *          summery: get all of courses
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string       
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: successfully
+ */
+router.get('/:id', CourseController.getCourseById);
 
 module.exports = {
     AdminApiCourseRouter: router
