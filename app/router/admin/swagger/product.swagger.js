@@ -161,6 +161,10 @@
  *          responses:
  *              201:
  *                  description: The product was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
  */
 /**
  * @swagger

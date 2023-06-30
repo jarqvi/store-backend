@@ -33,6 +33,10 @@
  *          responses:
  *              201:
  *                  description: Success
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
  */
 /**
  * @swagger
