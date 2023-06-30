@@ -47,7 +47,22 @@
  *                      format: binary
  *                  type: 
  *                      $ref: '#/components/schemas/Types'
- *                      
+ *          AddChapter:
+ *              type: object
+ *              required:
+ *                  -   id            
+ *                  -   title
+ *              properties:   
+ *                  id:
+ *                      type: string
+ *                      example: "649c022a50430f4c56d94867"
+ *                  title:
+ *                      type: string
+ *                      example: chapter-1
+ *                  text:
+ *                      type: string
+ *                      example: the describe about this chapter
+ *                             
  */
 /**
  * @swagger
@@ -166,4 +181,24 @@
  *          responses:
  *              200:
  *                  description: successfully
+ */
+/**
+ * @swagger
+ *  /admin/courses/chapter:
+ *      put:
+ *          tags: [Course(AdminPanel)]
+ *          summery: add chapter to course
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddChapter'
+ *          responses:
+ *              201:
+ *                  description: The course was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
  */
