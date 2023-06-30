@@ -78,6 +78,10 @@
  *      responses:
  *          201:
  *              description: success - create new blog
+ *              content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
  */
 /**
  * @swagger
