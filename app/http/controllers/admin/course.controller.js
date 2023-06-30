@@ -4,6 +4,7 @@ const Controller = require("../controller");
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const path = require('path');
 const createError = require('http-errors');
+const { default: mongoose } = require("mongoose");
 
 class CourseController extends Controller {
     async getListOfProduct(req, res, next) {
@@ -56,6 +57,26 @@ class CourseController extends Controller {
                 data: {
                     statusCode: HttpStatus.OK,
                     course
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+    async addChapter(req, res, next) {
+        try {
+            const {id, title, text} = req.body;
+            if (!mongoose.isValidObjectId(id)) throw createError.BadRequest('Invalid id');
+            const course = await CourseModel.findById(id);
+            if (!course) throw createError.NotFound('Not found course');
+            const result = await CourseModel.updateOne({_id: id}, {$push: {
+                chapters: {title, text, episodes: []}
+            }});
+            if (result.modifiedCount === 0) throw createError.InternalServerError('Chapter not created');
+            return res.status(HttpStatus.CREATED).json({
+                statusCode: HttpStatus.CREATED,
+                data: {
+                    message: 'Chapter created successfully'
                 }
             });
         } catch (error) {

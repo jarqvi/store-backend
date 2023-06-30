@@ -6,7 +6,7 @@ const { uploadFile } = require('../../utils/multer');
 
 router.get('/list', CourseController.getListOfProduct);
 router.post('/add', uploadFile.single('image'), stringToArray('tags'), CourseController.addCourse);   
-// router.put();
+router.put('/chapter', CourseController.addChapter);
 // router.put();
 // router.delete();
 // router.patch();
