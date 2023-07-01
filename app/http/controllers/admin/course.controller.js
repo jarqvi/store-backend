@@ -83,6 +83,21 @@ class CourseController extends Controller {
             next(error);
         }
     }
+    async getChaptersOfCourse(req, res, next) {
+        try {
+            const {id} = req.params;
+            const chapters = await CourseModel.findById(id, {chapters: 1, title: 1});
+            if (!chapters) throw createError.NotFound('Not found course');
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    chapters
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = {

@@ -111,6 +111,38 @@
  *                                  teacher:
  *                                      type: string
  *                                      example: "John Doe"
+ * 
+ * 
+ */
+/**
+ * @swagger
+ *  definitions:
+ *      ListOfChapters:
+ *          type: object
+ *          properties:
+ *              statusCode:
+ *                  type: integer
+ *                  example: 200
+ *              data:
+ *                  type: object
+ *                  properties:
+ *                      chapters:
+ *                          type: array
+ *                          items:
+ *                              type: object
+ *                              properties:
+ *                                  _id:
+ *                                      type: string
+ *                                      example: "649c022a50430f4c56d94867"
+ *                                  title:
+ *                                      type: string
+ *                                      example: "course"
+ *                                  chapters:
+ *                                      type: array
+ *                                      items:
+ *                                          type: object
+ *                                      example: [{title: "title", text: "text", episodes: [], _id: "649c022a50430f4c56d94867"}]
+ *                                  
  */
 /**
  * @swagger
@@ -201,4 +233,24 @@
  *                      application/json:
  *                          schema:
  *                              $ref: '#/definitions/publicDefinition'
+ */
+/**
+ * @swagger
+ *  /admin/courses/chapter-list/{id}:
+ *      get:
+ *          tags: [Course(AdminPanel)]
+ *          summery: add chapter to course
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *                  description: id of course
+ *          responses:
+ *              200:
+ *                  description: The course was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/ListOfChapters'
  */
