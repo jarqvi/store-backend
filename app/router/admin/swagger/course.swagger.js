@@ -254,3 +254,23 @@
  *                          schema:
  *                              $ref: '#/definitions/ListOfChapters'
  */
+/**
+ * @swagger
+ *  /admin/courses/remove-chapter/{id}:
+ *      patch:
+ *          tags: [Course(AdminPanel)]
+ *          summery: add chapter to course
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *                  description: id of chapter
+ *          responses:
+ *              200:
+ *                  description: The course was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
+ */
