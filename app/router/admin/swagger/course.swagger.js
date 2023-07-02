@@ -62,7 +62,15 @@
  *                  text:
  *                      type: string
  *                      example: the describe about this chapter
- *                             
+ *          UpdateChapter:
+ *              type: object
+ *              properties:
+ *                  title:
+ *                      type: string
+ *                      example: "title-1"
+ *                  text:
+ *                      type: string
+ *                      example: "text of chapter"
  */
 /**
  * @swagger
@@ -259,13 +267,39 @@
  *  /admin/courses/remove-chapter/{id}:
  *      patch:
  *          tags: [Course(AdminPanel)]
- *          summery: add chapter to course
+ *          summery: remove chapter from course
  *          parameters:
  *              -   in: path
  *                  name: id
  *                  type: string
  *                  required: true
  *                  description: id of chapter
+ *          responses:
+ *              200:
+ *                  description: The course was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
+ */
+/**
+ * @swagger
+ *  /admin/courses/update-chapter/{id}:
+ *      put:
+ *          tags: [Course(AdminPanel)]
+ *          summery: update chapter to course
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *                  description: id of chapter
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  application/x-www-form-urlencoded:
+ *                      schema:
+ *                          $ref: '#/components/schemas/UpdateChapter'    
  *          responses:
  *              200:
  *                  description: The course was successfully added
