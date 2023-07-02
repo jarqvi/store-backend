@@ -16,6 +16,11 @@ const Schema = new mongoose.Schema({
     birthday: {type: String},
     roles: {type: [String], default: ['USER']},
     courses: {type: [mongoose.Types.ObjectId], ref: 'course', default: []}
+}, {
+    timestamps: true,
+    toJSON: {
+        virtuals: true
+    }
 });
 
 module.exports = {
