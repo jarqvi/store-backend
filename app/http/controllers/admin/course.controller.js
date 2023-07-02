@@ -117,6 +117,35 @@ class CourseController extends Controller {
             next(error);
         }
     }
+    async updateChapter(req, res, next) {
+        try {
+            const {id} = req.params;
+            const data = req.body;
+            let blackList = [undefined, null, 0, '0', ' ', ''];
+            Object.keys(data).forEach(key => {
+                if ('_id'.includes(data[key])) delete data[key];
+                if (typeof data[key] == 'string') data[key] = data[key].trim();
+                if (Array.isArray(data[key]) && data[key].length > 0) data[key] = data[key].map(item => item.trim());
+                if (Array.isArray(data[key]) && data[key].length == 0) delete data[key];
+                if (blackList.includes(data[key])) delete data[key];
+            });
+            const chapter = await CourseModel.findOne({'chapters._id': id}, {'chapters.$': 1});
+            if (!chapter) throw createError.NotFound('Not found chapter');
+            const result = await CourseModel.updateOne(
+                {'chapters._id': id},
+                {$set: {'chapters.$': data}}
+            );
+            if (result.modifiedCount === 0) throw createError.InternalServerError('Chapter not updated');
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Chapter updated successfully'
+                }
+            })
+        } catch (error) {
+            next(error);
+        }
+    }
 }
 
 module.exports = {
