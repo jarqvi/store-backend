@@ -9,8 +9,8 @@ router.post('/add', uploadFile.single('image'), stringToArray('tags'), CourseCon
 router.put('/chapter', CourseController.addChapter);
 router.get('/chapter-list/:id', CourseController.getChaptersOfCourse);
 // router.put();
+router.patch('/remove-chapter/:id', CourseController.removeChapter);
 // router.delete();
-// router.patch();
 router.get('/:id', CourseController.getCourseById);
 
 
