@@ -71,6 +71,40 @@
  *                  text:
  *                      type: string
  *                      example: "text of chapter"
+ *          AddEpisode:
+ *              type: object
+ *              required: 
+ *                  -   courseId
+ *                  -   chapterId
+ *                  -   title
+ *                  -   text
+ *                  -   video
+ *                  -   type
+ *              properties:
+ *                  courseId:
+ *                      type: string
+ *                      example: 649c022a50430f4c56d94867
+ *                  chapterId:
+ *                      type: string
+ *                      example: 64a133a83e323c967a07c0fd
+ *                  title:
+ *                      type: string
+ *                      description: the describe about this episode  
+ *                      example: video-1  
+ *                  text:
+ *                      type: string
+ *                      description: the title of episode
+ *                      example: about programming
+ *                  video:
+ *                      type: string
+ *                      description: the file of video (hh:mm:ss)
+ *                      format: binary
+ *                  type:
+ *                      type: string
+ *                      description: the episode type (unlock or lock)
+ *                      enum:
+ *                          -   unlock      
+ *                          -   lock      
  */
 /**
  * @swagger
@@ -303,6 +337,26 @@
  *          responses:
  *              200:
  *                  description: The course was successfully added
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
+ */
+/**
+ * @swagger
+ *  /admin/courses/add-episode:
+ *      post:
+ *          tags: [Course(AdminPanel)]
+ *          summary: Add new episode
+ *          requestBody:
+ *              required: true
+ *              content:
+ *                  multipart/form-data:
+ *                      schema:
+ *                          $ref: '#/components/schemas/AddEpisode'
+ *          responses:
+ *              201:
+ *                  description: The episode was successfully added
  *                  content:
  *                      application/json:
  *                          schema:

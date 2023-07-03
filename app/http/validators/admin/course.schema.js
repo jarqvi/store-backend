@@ -15,7 +15,17 @@ const createCourseSchema = Joi.object({
     fileUploadPath: Joi.allow(),
     
 });
+const createEpisodeSchema = Joi.object({
+    title: Joi.string().min(3).max(30).error(createError.BadRequest('Title is required and must be between 3 and 30 characters')),
+    text: Joi.string().error(createError.BadRequest('Text is not valid')),
+    type: Joi.string().regex(/(lock|unlock)/i).error(createError.BadRequest('Type is not valid')),
+    chapterId: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest('Category id is not valid')),
+    courseId: Joi.string().pattern(MongoIDPattern).error(createError.BadRequest('Course id is not valid')),
+    fileName: Joi.string().pattern(/(\.mp4|\.mkv|\.mpg|\.avi|\.mov)$/).error(createError.BadRequest('Video is not valid')),
+    fileUploadPath: Joi.allow(),
+});
 
 module.exports = {
-    createCourseSchema
+    createCourseSchema,
+    createEpisodeSchema
 };

@@ -1,10 +1,12 @@
 const { CourseModel } = require("../../../models/course");
-const { createCourseSchema } = require("../../validators/admin/course.schema");
+const { createCourseSchema, createEpisodeSchema } = require("../../validators/admin/course.schema");
 const Controller = require("../controller");
 const {StatusCodes: HttpStatus} = require('http-status-codes');
 const path = require('path');
 const createError = require('http-errors');
 const { default: mongoose } = require("mongoose");
+const { getVideoDurationInSeconds } = require('get-video-duration')
+const { getTime } = require("../../../utils/functions");
 
 class CourseController extends Controller {
     async getListOfCourse(req, res, next) {
@@ -152,6 +154,30 @@ class CourseController extends Controller {
                     message: 'Chapter updated successfully'
                 }
             })
+        } catch (error) {
+            next(error);
+        }
+    }
+    async addEpisode(req, res, next) {
+        try {
+            let {type, title, text, chapterId, courseId, fileName, fileUploadPath} = await createEpisodeSchema.validateAsync(req.body);
+            fileUploadPath = fileUploadPath.replace(/\\/g, '/');
+            const videoAdd = path.join(fileUploadPath, fileName).replace(/\\/g, '/');
+            const videoUrl = `http://localhost:3000/${videoAdd}`;
+            const seconds = await getVideoDurationInSeconds(videoUrl);
+            const time = getTime(seconds);
+            const createEpisode = await CourseModel.updateOne({_id: courseId, 'chapters._id': chapterId}, {
+                $push: {
+                    'chapters.$.episodes': {title, text, type, videoAdd, time}
+                }
+            });
+            if (createEpisode.modifiedCount === 0) throw createError.InternalServerError('Episode not created');
+            return res.status(HttpStatus.CREATED).json({
+                statusCode: HttpStatus.CREATED,
+                data: {
+                    message: 'Episode created successfully'
+                }
+            });
         } catch (error) {
             next(error);
         }
