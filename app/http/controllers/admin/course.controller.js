@@ -7,6 +7,7 @@ const createError = require('http-errors');
 const { default: mongoose } = require("mongoose");
 const { getVideoDurationInSeconds } = require('get-video-duration')
 const { getTime } = require("../../../utils/functions");
+const { ObjectIdValidator } = require("../../validators/public.validator");
 
 class CourseController extends Controller {
     async getListOfCourse(req, res, next) {
@@ -176,6 +177,27 @@ class CourseController extends Controller {
                 statusCode: HttpStatus.CREATED,
                 data: {
                     message: 'Episode created successfully'
+                }
+            });
+        } catch (error) {
+            next(error);
+        }
+    }
+    async removeEpisode(req, res, next) {
+        try {
+            const {id: episodeId} = await ObjectIdValidator.validateAsync({id: req.params.id});
+            const removeEpisode = await CourseModel.updateOne({'chapters.episodes._id': episodeId}, {
+                $pull: {
+                    'chapters.$.episodes': {
+                        _id: episodeId
+                    }
+                }
+            });
+            if (removeEpisode.modifiedCount === 0) throw createError.InternalServerError('Episode not deleted');
+            return res.status(HttpStatus.OK).json({
+                statusCode: HttpStatus.OK,
+                data: {
+                    message: 'Episode deleted successfully'
                 }
             });
         } catch (error) {

@@ -362,3 +362,22 @@
  *                          schema:
  *                              $ref: '#/definitions/publicDefinition'
  */
+/**
+ * @swagger
+ *  /admin/courses/remove-episode/{id}:
+ *      delete:
+ *          tags: [Course(AdminPanel)]
+ *          summary: remove episode
+ *          parameters:
+ *              -   in: path
+ *                  name: id
+ *                  type: string
+ *                  required: true
+ *          responses:
+ *              200:
+ *                  description: The episode was successfully removed
+ *                  content:
+ *                      application/json:
+ *                          schema:
+ *                              $ref: '#/definitions/publicDefinition'
+ */

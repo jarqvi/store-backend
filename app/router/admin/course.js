@@ -11,7 +11,7 @@ router.get('/chapter-list/:id', CourseController.getChaptersOfCourse);
 router.put('/update-chapter/:id', CourseController.updateChapter);
 router.patch('/remove-chapter/:id', CourseController.removeChapter);
 router.post('/add-episode', uploadVideo.single('video'), CourseController.addEpisode);
-// router.delete();
+router.delete('/remove-episode/:id', CourseController.removeEpisode);
 router.get('/:id', CourseController.getCourseById);
 
 
